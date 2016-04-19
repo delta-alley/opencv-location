@@ -11,8 +11,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" exported="" scope="PROVIDED" name="opencv-310" level="project" />
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" exported="">
       <library name="Maven: org.opencv:org.opencv:3.1.0">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/src/lib/opencv-310.jar!/" />
