@@ -31,7 +31,7 @@ import javafx.scene.image.ImageView;
  * @since 1.0 (2014-01-10)
  *
  */
-public class Controller implements Initializable
+public classs Controller implements Initializable
 {
     // FXML buttons
     @FXML
