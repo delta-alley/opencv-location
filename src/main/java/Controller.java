@@ -19,7 +19,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-
+// Test for Jenkins
 /**
  * The controller associated with the only view of our application. The
  * application logic is implemented here. It handles the button for
@@ -31,7 +31,7 @@ import javafx.scene.image.ImageView;
  * @since 1.0 (2014-01-10)
  *
  */
-public class Controller implements Initializable
+//public class Controller implements Initializable
 {
     // FXML buttons
     @FXML
