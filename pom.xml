@@ -20,5 +20,14 @@
             </plugin>
         </plugins>
     </build>
-
+    <dependencies>
+        <dependency>
+            <groupId>org.opencv</groupId>
+            <artifactId>org.opencv</artifactId>
+            <scope>system</scope>
+            <version>3.1.0</version>
+            <systemPath>${basedir}\src\lib\opencv-310.jar</systemPath>
+        </dependency>
+    </dependencies>
 </project>
+
