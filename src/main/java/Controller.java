@@ -33,7 +33,7 @@ import static org.opencv.imgcodecs.Imgcodecs.imwrite;
  * @since 1.0 (2014-01-10)
  *
  */
-public class Controller implements Initializable
+//public class Controller implements Initializable
 {
     // FXML buttons
     @FXML
