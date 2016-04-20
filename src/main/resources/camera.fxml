@@ -19,8 +19,10 @@
                <children>
                   <CheckBox fx:id="haarClassifier" onAction="#haarSelected" text="Haar Classifier" />
                   <CheckBox fx:id="lbpClassifier" onAction="#lbpSelected" text="LBP Classifier" />
+                  <CheckBox fx:id="saveImages" onAction="#saveImagesSelected" text="Save all recorded faces" />
                   <TextField fx:id="txtClassifier" />
                   <Slider fx:id="sliNeighbours" max="10.0" />
+                  <Slider fx:id="sliBrightness" max="255" min="-100" />
                </children>
             </HBox>
             <Separator />
@@ -33,7 +35,12 @@
             <Insets left="10" right="10" />
          </padding>
          <children>
-            <ImageView fx:id="originalFrame" />
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <ImageView fx:id="originalFrame" />
+                  <ImageView fx:id="computerFrame" />
+               </children>
+            </HBox>
          </children>
       </VBox>
    </center>

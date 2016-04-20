@@ -20,6 +20,8 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+import static org.opencv.imgcodecs.Imgcodecs.imwrite;
+
 /**
  * The controller associated with the only view of our application. The
  * application logic is implemented here. It handles the button for
@@ -36,10 +38,10 @@ public class Controller implements Initializable
     // FXML buttons
     @FXML
     private Button cameraButton;
-    // the FXML area for showing the current frame
     @FXML
     private ImageView originalFrame;
-    // checkboxes for enabling/disabling a classifier
+    @FXML
+    private ImageView computerFrame;
     @FXML
     private CheckBox haarClassifier;
     @FXML
@@ -48,6 +50,14 @@ public class Controller implements Initializable
     private TextField txtClassifier;
     @FXML
     private Slider sliNeighbours;
+    @FXML
+    private Slider sliBrightness;
+    @FXML
+    private CheckBox saveImages;
+
+    private int faceCount;
+
+    private int frameRate;
 
     // a timer for acquiring the video stream
     private ScheduledExecutorService timer;
@@ -55,6 +65,7 @@ public class Controller implements Initializable
     private VideoCapture capture;
     // a flag to change the button behavior
     private boolean cameraActive;
+    private boolean save;
 
     // face cascade classifier
     private CascadeClassifier faceCascade;
@@ -68,6 +79,8 @@ public class Controller implements Initializable
         this.capture = new VideoCapture();
         this.faceCascade = new CascadeClassifier();
         this.absoluteFaceSize = 0;
+        this.frameRate = 2;
+        this.faceCount = 0;
     }
 
     /**
@@ -77,9 +90,11 @@ public class Controller implements Initializable
     protected void startCamera()
     {
         // set a fixed width for the frame
-        originalFrame.setFitWidth(600);
+        originalFrame.setFitWidth(750);
+        computerFrame.setFitWidth(750);
         // preserve image ratio
         originalFrame.setPreserveRatio(true);
+        computerFrame.setPreserveRatio(true);
 
         if (!this.cameraActive)
         {
@@ -104,7 +119,7 @@ public class Controller implements Initializable
                 };
 
                 this.timer = Executors.newSingleThreadScheduledExecutor();
-                this.timer.scheduleAtFixedRate(frameGrabber, 0, 200, TimeUnit.MILLISECONDS);
+                this.timer.scheduleAtFixedRate(frameGrabber, 0, (1000/frameRate), TimeUnit.MILLISECONDS);
 
                 // update the button content
                 this.cameraButton.setText("Stop Camera");
@@ -141,6 +156,7 @@ public class Controller implements Initializable
             this.capture.release();
             // clean the frame
             this.originalFrame.setImage(null);
+            this.computerFrame.setImage(null);
         }
     }
 
@@ -166,8 +182,16 @@ public class Controller implements Initializable
                 // if the frame is not empty, process it
                 if (!frame.empty())
                 {
+                    // Change frame brightness
+                    double brightnessRaw = sliBrightness.getValue();
+                    int brightness = (int)brightnessRaw;
+                    frame.convertTo(frame, -1, 1, brightness);
+
+                    computerFrame.setImage(mat2Image(frame));
+
                     // face detection
                     this.detectAndDisplay(frame);
+
 
                     // convert the Mat object (OpenCV) to Image (JavaFX)
                     imageToShow = mat2Image(frame);
@@ -194,6 +218,7 @@ public class Controller implements Initializable
     {
         MatOfRect faces = new MatOfRect();
         Mat grayFrame = new Mat();
+
         float faceSize = 0.01f;
 
         // convert the frame in gray scale
@@ -213,20 +238,37 @@ public class Controller implements Initializable
 
         // detect faces
         double neighbourCount = sliNeighbours.getValue();
-
         int neighbours = (int)neighbourCount;
+
         this.faceCascade.detectMultiScale(grayFrame, faces, 1.1, neighbours, 0 | Objdetect.CASCADE_SCALE_IMAGE,
                 new Size(this.absoluteFaceSize, this.absoluteFaceSize), new Size());
 
         // each rectangle in faces is a face: draw them!
         Rect[] facesArray = faces.toArray();
         Imgproc.putText(frame, String.valueOf(facesArray.length), new Point(15, 15), 1, 1, new Scalar(0,255,0));
+        if(save) {
+            for (int i = 0; i < facesArray.length; i++) {
+                    // Define the face you found
+                    Rect faceRect = new Rect(facesArray[i].tl(), facesArray[i].br());
+                    // Cut it out of the original image
+                    Mat face = new Mat(frame, faceRect).clone();
+                    // Store the image
+                    imwrite("faces/face_" + String.valueOf(faceCount) + ".png", face);
+                    faceCount++;
+            }
+        }
+
         for (int i = 0; i < facesArray.length; i++) {
             Imgproc.rectangle(frame, facesArray[i].tl(), facesArray[i].br(), new Scalar(0, 255, 0), 3);
             Imgproc.putText(frame, String.valueOf(facesArray[i].tl().x) + ", " + String.valueOf(facesArray[i].tl().y), facesArray[i].tl(), 1, 1, new Scalar(0, 255, 0));
         }
 
 
+    }
+
+    @FXML
+    protected void saveImagesSelected(Event event) {
+        save = this.saveImages.isSelected();
     }
 
     /**
