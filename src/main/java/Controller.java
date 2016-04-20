@@ -187,7 +187,7 @@ public class Controller implements Initializable
                     int brightness = (int)brightnessRaw;
                     frame.convertTo(frame, -1, 1, brightness);
 
-                    computerFrame.setImage(mat2Image(frame));
+                    //computerFrame.setImage(mat2Image(frame));
 
                     // face detection
                     this.detectAndDisplay(frame);
