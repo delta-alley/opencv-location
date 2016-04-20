@@ -90,7 +90,7 @@ public class Controller implements Initializable
     protected void startCamera()
     {
         // set a fixed width for the frame
-        originalFrame.setFitWidth(1100);
+        originalFrame.setFitWidth(1000);
         computerFrame.setFitWidth(50);
         // preserve image ratio
         originalFrame.setPreserveRatio(true);

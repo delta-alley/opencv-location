@@ -21,7 +21,7 @@
                   <CheckBox fx:id="lbpClassifier" onAction="#lbpSelected" text="LBP Classifier" />
                   <CheckBox fx:id="saveImages" onAction="#saveImagesSelected" text="Save all recorded faces" />
                   <TextField fx:id="txtClassifier" />
-                  <Slider fx:id="sliNeighbours" max="10.0" />
+                  <Slider fx:id="sliNeighbours" max="25.0" />
                   <Slider fx:id="sliBrightness" max="255" min="-100" />
                </children>
             </HBox>
