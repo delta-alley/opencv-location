@@ -79,7 +79,7 @@ public class Controller implements Initializable
         this.capture = new VideoCapture();
         this.faceCascade = new CascadeClassifier();
         this.absoluteFaceSize = 0;
-        this.frameRate = 2;
+        this.frameRate = 10;
         this.faceCount = 0;
     }
 
@@ -90,8 +90,8 @@ public class Controller implements Initializable
     protected void startCamera()
     {
         // set a fixed width for the frame
-        originalFrame.setFitWidth(750);
-        computerFrame.setFitWidth(750);
+        originalFrame.setFitWidth(1100);
+        computerFrame.setFitWidth(50);
         // preserve image ratio
         originalFrame.setPreserveRatio(true);
         computerFrame.setPreserveRatio(true);
